@@ -22,6 +22,17 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+        ndk {
+            abiFilters += listOf("arm64-v8a")
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
+        }
     }
 
     buildTypes {
@@ -29,21 +40,12 @@ android {
             isMinifyEnabled = false
         }
         configureEach {
-            //应用名
-            //app name
-            resValue("string","app_name","XXX Plugin")
-            //包名后缀
-            //package name Suffix
-            applicationIdSuffix = ".xxx"
+            resValue("string","app_name","MaliBridge")
+            applicationIdSuffix = ".mali"
 
-            //插件包在启动器内显示的名称
-            //Plugin package display name within the launcher
-            manifestPlaceholders["des"] = ""
-
-            //JVM环境参数配置
-            //JVM environment parameter configuration
+            manifestPlaceholders["des"] = "MaliBridge — Hardware Middleware para Mali-G52"
             manifestPlaceholders["environment"] = mutableMapOf<String,String>().apply {
-//                put("example.plugin", "example")
+
             }.run {
                 buildList {
                     this@run.forEach { (key, value) ->
@@ -51,24 +53,19 @@ android {
                     }
                 }.joinToString(" ")
             }
-
-            //最小支持的MC版本
-            //The minimum supported MC version
-            manifestPlaceholders["minMCVer"] = ""
-            //最大支持的MC版本
-            //The maximum supported MC version
-            manifestPlaceholders["maxMCVer"] = ""
+            manifestPlaceholders["minMCVer"] = "1.17"
+            manifestPlaceholders["maxMCVer"] = "1.21.99"
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+    kotlinOptions { jvmTarget = "1.8" }
 }
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar"))))
+    implementation(libs.androidx.core.ktx)
 }

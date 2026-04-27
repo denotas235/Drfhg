@@ -4,7 +4,9 @@ public class PluginNative {
     static {
         try {
             System.loadLibrary("maliplugin");
-        } catch (UnsatisfiedLinkError ignored) {}
+        } catch (UnsatisfiedLinkError e) {
+            android.util.Log.e("MaliBridge", "Erro ao carregar libmaliplugin: " + e.getMessage());
+        }
     }
 
     public static native String getGLExtensions();

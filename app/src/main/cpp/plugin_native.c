@@ -6,8 +6,9 @@
 #define LOG_TAG "MaliPlugin"
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 
+// Note que mudamos 'native' para 'jni' no nome da função abaixo
 JNIEXPORT jstring JNICALL
-Java_com_commonlauncher_nativeplugin_native_PluginNative_getGLExtensions(JNIEnv *env, jclass clazz) {
+Java_com_mio_plugin_renderer_jni_PluginNative_getGLExtensions(JNIEnv *env, jclass clazz) {
     EGLDisplay display = eglGetCurrentDisplay();
     const char *exts = NULL;
     if (display != EGL_NO_DISPLAY) exts = eglQueryString(display, EGL_EXTENSIONS);
@@ -15,7 +16,7 @@ Java_com_commonlauncher_nativeplugin_native_PluginNative_getGLExtensions(JNIEnv 
 }
 
 JNIEXPORT jfloat JNICALL
-Java_com_commonlauncher_nativeplugin_native_PluginNative_getGPUTemperature(JNIEnv *env, jclass clazz) {
+Java_com_mio_plugin_renderer_jni_PluginNative_getGPUTemperature(JNIEnv *env, jclass clazz) {
     FILE *fp = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
     if (!fp) return -1.0f;
     float temp; fscanf(fp, "%f", &temp); fclose(fp);
@@ -23,7 +24,7 @@ Java_com_commonlauncher_nativeplugin_native_PluginNative_getGPUTemperature(JNIEn
 }
 
 JNIEXPORT jfloat JNICALL
-Java_com_commonlauncher_nativeplugin_native_PluginNative_getGPUFrequency(JNIEnv *env, jclass clazz) {
+Java_com_mio_plugin_renderer_jni_PluginNative_getGPUFrequency(JNIEnv *env, jclass clazz) {
     FILE *fp = fopen("/sys/class/kgsl/kgsl-3d0/gpuclk", "r");
     if (!fp) return -1.0f;
     unsigned long freq; fscanf(fp, "%lu", &freq); fclose(fp);
@@ -31,7 +32,7 @@ Java_com_commonlauncher_nativeplugin_native_PluginNative_getGPUFrequency(JNIEnv 
 }
 
 JNIEXPORT jfloat JNICALL
-Java_com_commonlauncher_nativeplugin_native_PluginNative_getVRAMUsage(JNIEnv *env, jclass clazz) {
+Java_com_mio_plugin_renderer_jni_PluginNative_getVRAMUsage(JNIEnv *env, jclass clazz) {
     FILE *fp = fopen("/sys/class/kgsl/kgsl-3d0/mem_used", "r");
     if (!fp) return -1.0f;
     unsigned long mem; fscanf(fp, "%lu", &mem); fclose(fp);
